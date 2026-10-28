@@ -1,0 +1,62 @@
+image:
+  repository: ghcr.io/fet0/taskflow-api
+  tag: main
+  pullPolicy: Always
+
+replicaCount: 2
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+ingress:
+  enabled: false
+  className: nginx
+  host: taskflow.local
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+env:
+  LOG_LEVEL: info
+  CACHE_TTL_SECONDS: "30"
+  RATE_LIMIT_WINDOW_MS: "60000"
+  RATE_LIMIT_MAX: "60"
+
+secrets:
+  existingSecret: taskflow-secrets
+
+postgres:
+  image: postgres:16-alpine
+  storage: 1Gi
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+redis:
+  image: redis:7-alpine
+  storage: 1Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+
+networkPolicy:
+  enabled: false

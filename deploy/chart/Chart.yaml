@@ -1,0 +1,6 @@
+apiVersion: v2
+name: taskflow
+version: 0.1.0
+appVersion: "1.0.0"
+description: TaskFlow cloud-native task manager stack
+type: application

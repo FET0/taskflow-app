@@ -1,0 +1,37 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/FET0/taskflow
+  pullPolicy: IfNotPresent
+  tag: "latest"
+
+service:
+  type: ClusterIP
+  port: 3000
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+probes:
+  liveness:
+    path: /healthz
+    port: 3000
+  readiness:
+    path: /ready
+    port: 3000
+
+database:
+  host: "postgres"
+  port: 5432
+  name: "taskflow"
+  user: "taskflow"
+
+redis:
+  host: "redis"
+  port: 6379
+  # password is set via a secret
